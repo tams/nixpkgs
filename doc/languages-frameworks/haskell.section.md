@@ -388,6 +388,86 @@ documentation.
     * `broken`
     * `hydraPlatforms`
 
+## Development environments {#sec haskell-development-environments}
+
+Besides building and installing Haskell software, nixpkgs can also
+provide development environments for Haskell projects. This has the
+obvious advantage that you benefit from `cache.nixos.org` and no
+longer need to compile all project dependencies yourself.
+
+Our main objective with `haskellPackages` is to package Haskell
+software in nixpkgs. This entails some limitations, partially
+due to self-imposed restrictions of nixpkgs, partially in the
+name of maintainability:
+
+* Only the packages built with the default compiler see extensive
+  testing of the whole package set. The experience using an older
+  or newer packaged compiler may be worse.
+
+* We aim for a “blessed” package set which only contains one
+  version of each package.
+
+Thus, to get the best experience, make sure that your project
+can be compiled using the default compiler of nixpkgs and
+recent versions of its dependencies. “Recent” can either
+mean the version contained in a certain Stackage snapshot
+(the latest lts or nightly one) <!-- TODO document our use of solvers -->
+or the latest version from Hackage. Similarly to Stackage,
+we sometimes intervene and downgrade packages to ensure
+as many packages as possible can be compiled together.
+
+In particular, it is not possible to get the dependencies
+of a legacy project from nixpkgs or to use a specific
+stack solver for compiling a project.
+
+Now for the actual development environments: By default
+every derivation built using [`haskellPackages.mkDerivation`](#haskell-mkderivation)
+exposes a environment suitable for building it interactively
+as the `env` attribute. For example, if you have a local
+checkout of `random`, you can enter a development environment
+for it like this (if the dependencies in the development
+and packaged version match):
+
+```console
+$ cd ~/src/random
+$ nix-shell -A haskellPackages.random.env '<nixpkgs>'
+[nix-shell:~/src/random]$ ghc-pkg list
+/nix/store/5pss2hw4qlmc4xj7ybp2x16c29ccv47x-ghc-8.10.7-with-packages/lib/ghc-8.10.7/package.conf.d
+    Cabal-3.2.1.0
+    array-0.5.4.0
+    base-4.14.3.0
+    binary-0.8.8.0
+    …
+    ghc-8.10.7
+    …
+```
+
+As you can see, the environment contains a GHC which is
+setup so it finds all dependencies of `random`. Since
+nixpkgs only relies on `Setup.hs` for actually building
+the package, the environment doesn't contain familiar
+development tools like `cabal-install`. If you have
+it installed on your system anyways, it will work
+as expected in the `nix-shell` (as long as you don't
+use `--pure`). By passing `--offline` to `cabal-install`
+you make sure, it won't download and build any
+packages not provided using Nix. There is of course
+a better way to add any number of development tools
+to your `nix-shell` which we'll discuss later.
+
+Often you won't work on a package that is already
+part of `haskellPackages` or Hackage, so we first
+need to write a Nix expression to obtain the development
+environment from. Luckily, we can generate one
+very easily from an already existing cabal file
+using `cabal2nix`:
+
+```console
+$ ls
+my-project.cabal src …
+$ cabal2nix ./. > my-project.nix
+```
+
 ## Overriding haskell packages {#sec-haskell-overriding-haskell-packages}
 
 ### Overriding a single package
