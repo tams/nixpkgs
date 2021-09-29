@@ -18,7 +18,6 @@
 , libpsl
 , python3
 , brotli
-, fetchpatch
 }:
 
 stdenv.mkDerivation rec {
@@ -63,10 +62,18 @@ stdenv.mkDerivation rec {
     "-Dsysprof=disabled"
   ];
 
+  NIX_CFLAGS_COMPILE = "-lpthread";
+
   doCheck = false; # ERROR:../tests/socket-test.c:37:do_unconnected_socket_test: assertion failed (res == SOUP_STATUS_OK): (2 == 200)
 
+  postPatch = ''
+    patchShebangs libsoup/
+  '';
+
   passthru = {
-    propagatedUserEnvPackages = [ glib-networking.out ];
+    propagatedUserEnvPackages = [
+      glib-networking.out
+    ];
     updateScript = gnome.updateScript {
       packageName = pname;
       versionPolicy = "odd-unstable";
