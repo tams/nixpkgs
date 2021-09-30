@@ -19372,6 +19372,10 @@ with pkgs;
     inherit (darwin) apple_sdk;
   };
 
+  webkitgtk_4_1 = webkitgtk.override {
+    libsoup = libsoup_3;
+  };
+
   websocketpp = callPackage ../development/libraries/websocket++ { };
 
   webrtc-audio-processing = callPackage ../development/libraries/webrtc-audio-processing { };
