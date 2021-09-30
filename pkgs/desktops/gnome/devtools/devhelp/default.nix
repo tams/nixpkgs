@@ -7,11 +7,10 @@
 , gtk3
 , wrapGAppsHook
 , glib
-, amtk
 , appstream-glib
 , gobject-introspection
 , python3
-, webkitgtk
+, webkitgtk_4_1
 , gettext
 , itstool
 , gsettings-desktop-schemas
@@ -20,11 +19,11 @@
 
 stdenv.mkDerivation rec {
   pname = "devhelp";
-  version = "40.1";
+  version = "41.1";
 
   src = fetchurl {
     url = "mirror://gnome/sources/devhelp/${lib.versions.major version}/${pname}-${version}.tar.xz";
-    sha256 = "PorZPoSEtEgjyuR0ov2dziLtbs0lZVWSzq17G2gya7s=";
+    sha256 = "RupPh1LCJELg8UvhA4ek6KOHJoDD8EiCqr6sfa6iLks=";
   };
 
   nativeBuildInputs = [
@@ -42,8 +41,7 @@ stdenv.mkDerivation rec {
   buildInputs = [
     glib
     gtk3
-    webkitgtk
-    amtk
+    webkitgtk_4_1
     gnome.adwaita-icon-theme
     gsettings-desktop-schemas
   ];
