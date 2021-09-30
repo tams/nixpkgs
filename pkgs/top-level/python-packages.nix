@@ -1946,6 +1946,8 @@ in {
 
   demjson = callPackage ../development/python-modules/demjson { };
 
+  demjson3 = callPackage ../development/python-modules/demjson3 { };
+
   dendropy = callPackage ../development/python-modules/dendropy { };
 
   denonavr = callPackage ../development/python-modules/denonavr { };
