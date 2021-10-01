@@ -10,6 +10,7 @@
 , appstream-glib
 , gobject-introspection
 , python3
+, gi-docgen
 , webkitgtk_4_1
 , gettext
 , itstool
@@ -21,6 +22,11 @@ stdenv.mkDerivation rec {
   pname = "devhelp";
   version = "41.1";
 
+  outputs = [ "out" "devdoc" ];
+
+patches = [
+/home/jtojnar/Projects/devhelp/0001-docs-Fix-build-with-WebkitGTK-4.1.patch
+];
   src = fetchurl {
     url = "mirror://gnome/sources/devhelp/${lib.versions.major version}/${pname}-${version}.tar.xz";
     sha256 = "RupPh1LCJELg8UvhA4ek6KOHJoDD8EiCqr6sfa6iLks=";
@@ -36,6 +42,7 @@ stdenv.mkDerivation rec {
     appstream-glib
     gobject-introspection
     python3
+    gi-docgen
   ];
 
   buildInputs = [
@@ -44,6 +51,10 @@ stdenv.mkDerivation rec {
     webkitgtk_4_1
     gnome.adwaita-icon-theme
     gsettings-desktop-schemas
+  ];
+
+  mesonFlags = [
+    "-Dgtk_doc=true"
   ];
 
   doCheck = true;
@@ -60,6 +71,11 @@ stdenv.mkDerivation rec {
       # https://gitlab.gnome.org/GNOME/devhelp/issues/14
       --prefix XDG_DATA_DIRS : "${shared-mime-info}/share"
     )
+  '';
+
+  postFixup = ''
+    # Cannot be in postInstall, otherwise _multioutDocs hook in preFixup will move right back.
+    moveToOutput share/doc/devhelp-3 "$devdoc"
   '';
 
   passthru = {
