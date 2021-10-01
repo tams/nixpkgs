@@ -24,8 +24,6 @@
 , gnome-online-accounts
 , gnome-settings-daemon
 , gnome
-, grilo
-, grilo-plugins
 , gsettings-desktop-schemas
 , gsound
 , gtk3
@@ -125,8 +123,6 @@ stdenv.mkDerivation rec {
     gnome-remote-desktop # optional, sharing panel
     gnome-settings-daemon
     gnome-user-share # optional, sharing panel
-    grilo
-    grilo-plugins # for setting wallpaper from Flickr
     gsettings-desktop-schemas
     gsound
     gtk3
