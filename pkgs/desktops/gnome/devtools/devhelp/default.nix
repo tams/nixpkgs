@@ -11,7 +11,7 @@
 , gobject-introspection
 , python3
 , gi-docgen
-, webkitgtk_4_1
+, webkitgtk
 , gettext
 , itstool
 , gsettings-desktop-schemas
@@ -20,16 +20,13 @@
 
 stdenv.mkDerivation rec {
   pname = "devhelp";
-  version = "41.1";
+  version = "41.2";
 
   outputs = [ "out" "devdoc" ];
 
-patches = [
-/home/jtojnar/Projects/devhelp/0001-docs-Fix-build-with-WebkitGTK-4.1.patch
-];
   src = fetchurl {
     url = "mirror://gnome/sources/devhelp/${lib.versions.major version}/${pname}-${version}.tar.xz";
-    sha256 = "RupPh1LCJELg8UvhA4ek6KOHJoDD8EiCqr6sfa6iLks=";
+    sha256 = "7KqQsPTaqPsgMPbcaQv1M/+Zp3NDf+Dhis/oLZl/YNI=";
   };
 
   nativeBuildInputs = [
@@ -48,7 +45,7 @@ patches = [
   buildInputs = [
     glib
     gtk3
-    webkitgtk_4_1
+    webkitgtk
     gnome.adwaita-icon-theme
     gsettings-desktop-schemas
   ];
