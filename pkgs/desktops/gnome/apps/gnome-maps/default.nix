@@ -9,6 +9,7 @@
 , gtk3
 , gobject-introspection
 , gdk-pixbuf
+, librest
 , librsvg
 , libgweather
 , geoclue2
@@ -62,6 +63,7 @@ stdenv.mkDerivation rec {
     libgee
     libgweather
     libhandy
+    librest
     librsvg
     libsoup
     webkitgtk
