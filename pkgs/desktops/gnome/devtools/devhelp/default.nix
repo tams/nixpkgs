@@ -49,8 +49,9 @@ stdenv.mkDerivation rec {
   doCheck = true;
 
   postPatch = ''
-    chmod +x meson_post_install.py # patchShebangs requires executable file
-    patchShebangs meson_post_install.py
+    # patchShebangs requires executable file
+    chmod +x build-aux/meson/meson_post_install.py
+    patchShebangs build-aux/meson/meson_post_install.py
   '';
 
   preFixup = ''
