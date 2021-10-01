@@ -21,7 +21,7 @@
 , icu
 , libuuid
 , libsoup
-, libsoup3
+, libsoup_3
 , json-glib
 , systemd
 , dbus
@@ -69,7 +69,7 @@ stdenv.mkDerivation rec {
     sqlite
     icu
     libsoup
-    libsoup3
+    libsoup_3
     libuuid
     json-glib
     libstemmer
