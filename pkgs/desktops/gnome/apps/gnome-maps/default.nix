@@ -15,7 +15,6 @@
 , wrapGAppsHook
 , folks
 , libchamplain
-, gfbgraph
 , libsoup
 , gsettings-desktop-schemas
 , webkitgtk
@@ -53,7 +52,6 @@ stdenv.mkDerivation rec {
     gdk-pixbuf
     geoclue2
     geocode-glib
-    gfbgraph
     gjs
     gnome-online-accounts
     gnome.adwaita-icon-theme
