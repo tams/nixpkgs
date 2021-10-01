@@ -7,6 +7,7 @@
 , python3
 , wrapGAppsHook
 , glib
+, nv-codec-headers-11
 , pipewire
 , systemd
 , libvncserver
@@ -42,6 +43,7 @@ stdenv.mkDerivation rec {
     fuse3
     gdk-pixbuf # For libnotify
     glib
+    nv-codec-headers-11
     libnotify
     libsecret
     libvncserver
