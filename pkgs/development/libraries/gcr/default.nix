@@ -11,6 +11,9 @@
 , libtasn1
 , gtk3
 , pango
+, libsecret
+, openssh
+, systemd
 , gobject-introspection
 , makeWrapper
 , libxslt
@@ -22,11 +25,11 @@
 
 stdenv.mkDerivation rec {
   pname = "gcr";
-  version = "3.40.0";
+  version = "3.41.0";
 
   src = fetchurl {
     url = "mirror://gnome/sources/${pname}/${lib.versions.majorMinor version}/${pname}-${version}.tar.xz";
-    sha256 = "udNkWl/ZU6VChcxk1PwEZzZGPb1NzCXK9ce1m+0wJ/U=";
+    sha256 = "CQn8SeqK1IMtJ1ZP8v0dxmZpbioHxzlBxIgp5gVy2gE=";
   };
 
   postPatch = ''
@@ -56,6 +59,9 @@ stdenv.mkDerivation rec {
     libgcrypt
     libtasn1
     pango
+    libsecret
+    openssh
+    systemd
   ];
 
   propagatedBuildInputs = [
@@ -74,6 +80,8 @@ stdenv.mkDerivation rec {
 
   doCheck = false; # fails 21 out of 603 tests, needs dbus daemon
 
+  PKG_CONFIG_SYSTEMD_SYSTEMDUSERUNITDIR = "${placeholder "out"}/lib/systemd/user";
+
   preFixup = ''
     wrapProgram "$out/bin/gcr-viewer" \
       --prefix XDG_DATA_DIRS : "$GSETTINGS_SCHEMAS_PATH"
@@ -82,7 +90,6 @@ stdenv.mkDerivation rec {
   passthru = {
     updateScript = gnome.updateScript {
       packageName = pname;
-      versionPolicy = "odd-unstable";
     };
   };
 
