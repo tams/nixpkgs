@@ -1,7 +1,10 @@
 { stdenv
 , lib
 , fetchurl
+, meson
+, ninja
 , pkg-config
+, python3
 , libxml2
 , gnome
 , dconf
@@ -32,6 +35,8 @@ stdenv.mkDerivation rec {
   };
 
   nativeBuildInputs = [
+    meson
+    ninja
     pkg-config
     gettext
     itstool
@@ -44,6 +49,7 @@ stdenv.mkDerivation rec {
     desktop-file-utils
     wrapGAppsHook
     pcre2
+    python3
   ];
 
   buildInputs = [
@@ -56,11 +62,15 @@ stdenv.mkDerivation rec {
     nautilus # For extension
   ];
 
-  # Silly ./configure, it looks for dbus file from gnome-shell in the
+  # Silly build system, it looks for dbus file from gnome-shell in the
   # installation tree of the package it is configuring.
   postPatch = ''
-    substituteInPlace configure --replace '$(eval echo $(eval echo $(eval echo ''${dbusinterfacedir})))/org.gnome.ShellSearchProvider2.xml' "${gnome.gnome-shell}/share/dbus-1/interfaces/org.gnome.ShellSearchProvider2.xml"
-    substituteInPlace src/Makefile.in --replace '$(dbusinterfacedir)/org.gnome.ShellSearchProvider2.xml' "${gnome.gnome-shell}/share/dbus-1/interfaces/org.gnome.ShellSearchProvider2.xml"
+    substituteInPlace src/meson.build --replace "gt_prefix / gt_dbusinterfacedir / 'org.gnome.ShellSearchProvider2.xml'" "'${gnome.gnome-shell}/share/dbus-1/interfaces/org.gnome.ShellSearchProvider2.xml'"
+
+    patchShebangs \
+      data/icons/meson_updateiconcache.py \
+      data/meson_desktopfile.py \
+      src/meson_compileschemas.py
   '';
 
   passthru = {
@@ -69,8 +79,6 @@ stdenv.mkDerivation rec {
       attrPath = "gnome.gnome-terminal";
     };
   };
-
-  enableParallelBuilding = true;
 
   meta = with lib; {
     description = "The GNOME Terminal Emulator";
