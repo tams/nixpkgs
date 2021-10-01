@@ -25,7 +25,6 @@
 , gsettings-desktop-schemas
 , gnome-desktop
 , libxmlb
-, gnome-online-accounts
 , json-glib
 , libsecret
 , valgrind-light
@@ -89,7 +88,6 @@ stdenv.mkDerivation rec {
     polkit
     flatpak
     libxmlb
-    gnome-online-accounts
     libsysprof-capture
   ] ++ lib.optionals withFwupd [
     fwupd
