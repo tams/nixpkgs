@@ -11,6 +11,7 @@
 , flaky
 , glibcLocales
 , six
+, ApplicationServices
 }:
 
 let
@@ -86,6 +87,9 @@ buildPythonPackage rec {
   doCheck = !stdenv.isDarwin;
 
   nativeBuildInputs = [ openssl ];
+  buildInputs = lib.optionals stdenv.isDarwin [
+    ApplicationServices
+  ];
   propagatedBuildInputs = [ cryptography pyasn1 idna six ];
 
   checkInputs = [ pytest pretend flaky glibcLocales ];

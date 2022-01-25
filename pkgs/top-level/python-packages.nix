@@ -7191,7 +7191,9 @@ in {
 
   pyopengl-accelerate = callPackage ../development/python-modules/pyopengl-accelerate { };
 
-  pyopenssl = callPackage ../development/python-modules/pyopenssl { };
+  pyopenssl = callPackage ../development/python-modules/pyopenssl {
+    inherit (pkgs.darwin.apple_sdk.frameworks) ApplicationServices;
+  };
 
   pyopenuv = callPackage ../development/python-modules/pyopenuv { };
 
